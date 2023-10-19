@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import coil.compose.AsyncImage
 import com.example.androidwithjetpackcomposeconcepts.learning.AirPlaneModeReciever
+import com.example.androidwithjetpackcomposeconcepts.learning.fetchAndShowUser
 import com.example.androidwithjetpackcomposeconcepts.learning.viewmodels.ImageViewModel
 import com.example.androidwithjetpackcomposeconcepts.ui.theme.AndroidWIthJetpackComposeConceptsTheme
 
@@ -28,6 +29,10 @@ class MainActivity : ComponentActivity() {
     private val airPlaneModeReciever = AirPlaneModeReciever()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        fetchAndShowUser()
+        Log.d("coroutines", "4")
+
         registerReceiver(
             airPlaneModeReciever,
             IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED)
