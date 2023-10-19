@@ -2,6 +2,7 @@ package com.example.androidwithjetpackcomposeconcepts
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -17,14 +18,20 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import coil.compose.AsyncImage
+import com.example.androidwithjetpackcomposeconcepts.learning.AirPlaneModeReciever
 import com.example.androidwithjetpackcomposeconcepts.learning.viewmodels.ImageViewModel
 import com.example.androidwithjetpackcomposeconcepts.ui.theme.AndroidWIthJetpackComposeConceptsTheme
 
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<ImageViewModel>()
+    private val airPlaneModeReciever = AirPlaneModeReciever()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        registerReceiver(
+            airPlaneModeReciever,
+            IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+        )
         setContent {
             AndroidWIthJetpackComposeConceptsTheme {
                 Column(
@@ -69,5 +76,10 @@ class MainActivity : ComponentActivity() {
         }
         Log.d("my activity", uri.toString())
         viewModel.uppdateUri(uri)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(airPlaneModeReciever)
     }
 }
