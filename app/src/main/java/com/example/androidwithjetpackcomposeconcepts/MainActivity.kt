@@ -1,5 +1,6 @@
 package com.example.androidwithjetpackcomposeconcepts
 
+import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.IntentFilter
@@ -12,14 +13,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import coil.compose.AsyncImage
 import com.example.androidwithjetpackcomposeconcepts.learning.AirPlaneModeReciever
 import com.example.androidwithjetpackcomposeconcepts.learning.fetchAndShowUser
+import com.example.androidwithjetpackcomposeconcepts.learning.foregroundservices.RunningService
 import com.example.androidwithjetpackcomposeconcepts.learning.viewmodels.ImageViewModel
 import com.example.androidwithjetpackcomposeconcepts.ui.theme.AndroidWIthJetpackComposeConceptsTheme
 
@@ -29,6 +35,14 @@ class MainActivity : ComponentActivity() {
     private val airPlaneModeReciever = AirPlaneModeReciever()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                0
+            )
+        }
 
         fetchAndShowUser()
         Log.d("coroutines", "4")
@@ -66,6 +80,27 @@ class MainActivity : ComponentActivity() {
                         }
                     }) {
                         Text(text = "Click me")
+                    }
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Button(onClick = {
+                        Intent(applicationContext, RunningService::class.java).also {
+                            it.action = RunningService.Actions.START.toString()
+                            startService(it)
+                        }
+                    }) {
+                        Text(text = "Start Foreground service")
+                    }
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Button(onClick = {
+                        Intent(applicationContext, RunningService::class.java).also {
+                            it.action = RunningService.Actions.STOP.toString()
+                            stopService(it)
+                        }
+                    }) {
+                        Text(text = "Stop Foreground service")
                     }
                 }
             }
