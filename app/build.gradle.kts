@@ -68,4 +68,8 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.4.0")
     // coroutines
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    // work manager
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    //livedata-compose
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
 }
